@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choose Wisely</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            text-align: center;
+        }
+        .option {
+            display: inline-block;
+            padding: 20px 40px;
+            margin: 10px;
+            border: 2px solid #333;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+        .option.correct {
+            background-color: #4CAF50;
+            border-color: #4CAF50;
+        }
+        .option.wrong {
+            background-color: #f44336;
+            border-color: #f44336;
+        }
+        .option:hover {
+            transform: translateY(-2px);
+        }
+        h1 {
+            margin-bottom: 30px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>KUN THAU HOLA TA WHITE THULO ROUND WITH YELLOW TEMPLE???</h1>
+        <div class="option" onclick="checkAnswer(this, 'A')">SXC COLLEGE DEONA</div>
+        <div class="option" onclick="checkAnswer(this, 'B')">BOUDDHA</div>
+        <div class="option" onclick="checkAnswer(this, 'C')">MANEERA KO PALACE</div>
+        <div class="option" onclick="checkAnswer(this, 'D')">Khapurnath Temple HUMLA</div>
+    </div>
+
+    <audio id="correctSound" src="wow.m4a" preload="auto"></audio>
+    <audio id="wrongSound" src="nono.m4a" preload="auto"></audio>
+
+    <script>
+        // Set the correct answer (you can change this to any option)
+        const CORRECT_ANSWER = 'B';
+
+        function checkAnswer(selectedOption, correctAnswer) {
+            const options = document.querySelectorAll('.option');
+            const correctSound = document.getElementById('correctSound');
+            const wrongSound = document.getElementById('wrongSound');
+            
+            // Disable all options after selection
+            options.forEach(option => {
+                option.style.pointerEvents = 'none';
+            });
+            
+            // Check if the selected option is 'BOUDDHA' (case-insensitive)
+            const isBouddha = selectedOption.textContent.trim().toUpperCase() === 'BOUDDHA';
+            const isCorrect = isBouddha;
+            
+            // Play wow.m4a if BOUDDHA is clicked
+            if (isBouddha) {
+                console.log('BOUDDHA selected - playing wow.m4a');
+                const wowSound = new Audio('wow.m4a');
+                wowSound.play().catch(e => {
+                    console.error('Error playing wow.m4a:', e);
+                    // Try fallback sound
+                    const popSound = new Audio('pop.mp3');
+                    popSound.play().catch(console.error);
+                });
+            } else {
+                // Play wrong sound for other options
+                console.log('Wrong option selected - playing nono.m4a');
+                const nonoSound = new Audio('nono.m4a');
+                nonoSound.play().catch(e => {
+                    console.error('Error playing nono.m4a:', e);
+                    // Try fallback sound
+                    const boomSound = new Audio('boom.wav');
+                    boomSound.play().catch(console.error);
+                });
+            }
+            
+            if (isCorrect) {
+                // Correct answer
+                selectedOption.classList.add('correct');
+                
+                // Proceed to next question or end game
+                setTimeout(() => {
+                    window.location.href = 'spinach-smash.html';
+                }, 1500); // Increased delay to allow sound to play
+            } else {
+                // Wrong answer
+                selectedOption.classList.add('wrong');
+                
+                // Highlight correct answer
+                options.forEach(option => {
+                    if (option.textContent === correctAnswer) {
+                        option.classList.add('correct');
+                    }
+                });
+                
+                // Reset after delay
+                setTimeout(() => {
+                    options.forEach(option => {
+                        option.classList.remove('wrong');
+                        option.classList.remove('correct');
+                        option.style.pointerEvents = 'auto';
+                    });
+                }, 2000); // Increased delay to allow sound to play
+            }
+        }
+    </script>
+</body>
+</html>

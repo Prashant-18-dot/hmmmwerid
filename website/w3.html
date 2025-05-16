@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mam's Divine Trials</title>
+    <style>
+        @font-face {
+            font-family: 'PixelFont';
+            src: url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'PixelFont', monospace;
+            background: url('ww.jpg') no-repeat center center fixed;
+            background-size: cover;
+            height: 100vh;
+            overflow: hidden;
+            touch-action: manipulation;
+            position: relative;
+        }
+
+        /* Top Message Bar */
+        .top-message {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 10px 20px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            text-align: center;
+            font-size: 1.2em;
+            z-index: 1000;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Celebration Effects */
+        .celebration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            pointer-events: none;
+        }
+
+        .celebration-text {
+            font-size: 3em;
+            color: white;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+            animation: celebrate 2s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes celebrate {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+        }
+
+        /* Chat Styles */
+        .chat-container {
+            width: 100%;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.95);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+            position: relative;
+            z-index: 1000;
+            backdrop-filter: blur(2px);
+        }
+
+        .messages-container {
+            width: 100%;
+            max-width: 600px;
+            height: 80vh;
+            overflow-y: auto;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .message-bubble {
+            background: #2980b9;
+            padding: 15px 20px;
+            border-radius: 2px;
+            margin-bottom: 15px;
+            max-width: 80%;
+            animation: fadeIn 0.3s ease-in;
+            font-size: 1.2em;
+            line-height: 1.4;
+            border: 2px solid #000;
+            text-shadow: 1px 1px 0 #000;
+            box-shadow: 0 0 4px rgba(0,0,0,0.5);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Typing Indicator */
+        .typing-indicator {
+            animation: typing 1s ease-in-out infinite;
+            font-size: 1.2em;
+            margin: 10px 0;
+            color: #fff;
+            text-shadow: 1px 1px 0 #000;
+        }
+
+        .typing-dots {
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        /* Game Styles */
+        .waiting-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 4em;
+            text-align: center;
+            z-index: 1000;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.8; }
+            100% { opacity: 1; }
+        }
+
+        .game-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .instruction-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        
+        .instruction-overlay h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            color: #ff4444;
+            text-shadow: 0 0 10px rgba(255, 68, 68, 0.7);
+        }
+        
+        .instruction-overlay p {
+            font-size: 1.5em;
+            margin-bottom: 30px;
+            max-width: 80%;
+        }
+        
+        .start-game-btn {
+            padding: 15px 30px;
+            font-size: 1.2em;
+            background-color: #ff4444;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .start-game-btn:hover {
+            background-color: #ff0000;
+            transform: scale(1.05);
+        }
+
+        .level {
+            display: none;
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .active {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .target {
+            position: absolute;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .target:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .smoke {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle, rgba(255,0,0,0.3) 0%, rgba(255,165,0,0.3) 15%, rgba(255,255,255,0.3) 30%, rgba(0,0,0,0.3) 45%, rgba(0,0,0,0) 60%);
+            border-radius: 50%;
+            animation: smokeEffect 1.2s ease-out forwards;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        @keyframes smokeEffect {
+            0% {
+                transform: scale(0) translate(-50%, -50%);
+                opacity: 0.9;
+            }
+            100% {
+                transform: scale(5) translate(-50%, -50%);
+                opacity: 0;
+            }
+        }
+
+        /* Confetti styles */
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: linear-gradient(45deg, #ff0000, #ff00ff, #00ff00, #0000ff);
+            animation: fall linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-100vh); opacity: 1; }
+            100% { transform: translateY(100vh); opacity: 0; }
+        }
+
+        /* Party emoji train */
+        .party-train {
+            position: absolute;
+            font-size: 24px;
+            animation: moveTrain 10s linear infinite;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        @keyframes moveTrain {
+            0% { left: 100%; }
+            100% { left: -200%; }
+        }
+
+        .message {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #fff 0%, #f0f0f0 100%);
+            padding: 15px 30px;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            text-align: center;
+            font-size: 18px;
+            font-family: 'PixelFont', monospace;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transform: translate(-50%, -50%) translateY(20px) scale(0.95);
+            transition: all 0.3s ease-in-out;
+            z-index: 1000;
+            pointer-events: auto;
+            color: #333;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .message::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.2); }
+            50% { box-shadow: 0 0 0 5px rgba(255, 255, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.2); }
+        }
+
+        .sparkles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            animation: sparkle 2s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes sparkle {
+            0% {
+                opacity: 0.8;
+                transform: translateY(0) scale(0.5);
+            }
+            50% {
+                opacity: 0.5;
+                transform: translateY(-20px) scale(1.5);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-40px) scale(2);
+            }
+        }
+
+        .button {
+            flex: 1;
+            height: 100vh;
+            border: none;
+            color: white;
+            font-size: 2em;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-transform: uppercase;
+            transition: transform 0.2s ease;
+            position: relative;
+            z-index: 100;
+            text-shadow: 1px 1px 0 #000;
+            border: 2px solid #000;
+        }
+
+        .skip-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #e74c3c;
+            color: white;
+            border: 2px solid #000;
+            padding: 10px 20px;
+            font-size: 1.1em;
+            cursor: pointer;
+            text-transform: uppercase;
+            text-shadow: 1px 1px 0 #000;
+            transition: transform 0.2s ease;
+            border-radius: 2px;
+        }
+
+        .skip-button:hover {
+            transform: scale(1.1);
+        }
+
+        .button:hover {
+            transform: scale(1.05);
+        }
+
+        #sound-prompt {
+            display: flex;
+            width: 100%;
+            height: 100vh;
+        }
+
+        #sound-prompt button:first-child {
+            background-color: #2980b9;
+        }
+
+        #sound-prompt button:last-child {
+            background-color: #e74c3c;
+        }
+
+        .typewriter {
+            white-space: pre-wrap;
+            overflow: hidden;
+            border-right: 2px solid;
+            padding: 20px;
+            margin: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-message" id="topMessage"></div>
+    <div class="game-container">
+        <div id="dialogue-container" class="chat-container">
+            <div class="messages-container" id="messages-container">
+                <!-- Messages will be added here -->
+            </div>
+            <button class="skip-button" onclick="skipDialogue()">Skip</button>
+        </div>
+        <div id="sound-prompt" style="display: none;">
+            <button class="button" onclick="showGameInstructions()">SOMETHING IS COMMING OUR WAY</button>
+        </div>
+        
+        <div id="level1" class="level active">
+            <!-- Pigeons will be generated here -->
+        </div>
+
+        <div id="level2" class="level">
+            <!-- Spinach will be generated here -->
+        </div>
+
+        <div id="level3" class="level">
+            <div class="typewriter"></div>
+            <button class="button" onclick="acceptSummons()">Accept The Summons</button>
+            <button class="button" onclick="meditate()">Meditate on It</button>
+        </div>
+    </div>
+    </div>
+
+    <script>
+        let audioContext;
+        let currentLevel = 1;
+        const messages = {
+            pigeon: [
+            "YES ONE PAREWA GONE MORE TO COMEEEEEE",
+                "DON DON DON GOAT GOAT GOAT DON HO DON",
+                "ABA THORAI TA ANI TA SAKYO YO FOUL BIRD HARU SAB MARNU PARXA",
+                "BOUDDHA MA NI PAREWA XA TIYO THAU KO PAREWA KASLE CLEAN UP GARLA HMM........"
+            ],
+            spinach: [
+                "XHI XHI XHI KASTO NARAMRO TARKARI SAGGG XHI XHI XHI",
+                "YO MATO BATA YO SAB SAG FALNU PARXA XHI XHI XHI",
+                "ONLY YOUR DEVINE POWER CAN HELP US CLEAN THIS SAGGG  MATO LAI SAFA BANAUNU PARXA",
+                "YESTO VERSATILE MATO LAI WE CANT LET SAGG TAKE IT XHI XHI XHI",
+                
+            ]
+        };
+
+        function preloadSounds() {
+            boomSound = new Audio('boom.wav');
+            congratulationsSound = new Audio('congratulaions.mp3');
+            boomSound.load();
+            congratulationsSound.load();
+        }
+
+        const gameEffects = {
+            confetti: {
+                interval: null,
+                create() {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = `${Math.random() * 100}%`;
+                    confetti.style.top = '-10px';
+                    confetti.style.background = `linear-gradient(45deg, ${this.getRandomColor()}, ${this.getRandomColor()}, ${this.getRandomColor()})`;
+                    confetti.style.width = `${Math.random() * 10 + 5}px`;
+                    confetti.style.height = `${Math.random() * 10 + 5}px`;
+                    confetti.style.animation = `fall ${Math.random() * 2 + 2}s linear infinite`;
+                    document.body.appendChild(confetti);
+                    
+                    // Remove confetti after animation
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 4000);
+                },
+                start() {
+                    if (this.interval) return;
+                    this.interval = setInterval(() => this.create(), 100);
+                },
+                stop() {
+                    if (!this.interval) return;
+                    clearInterval(this.interval);
+                    this.interval = null;
+                    // Remove all confetti elements
+                    const confettiElements = document.querySelectorAll('.confetti');
+                    confettiElements.forEach(confetti => confetti.remove());
+                }
+            },
+            train: {
+                element: null,
+                start() {
+                    if (this.element) return;
+                    this.element = document.createElement('div');
+                    this.element.className = 'party-train';
+                    this.element.style.top = '50%';
+                    this.element.innerHTML = '🎉🎊🥳🎉🎊🥳🎉🎊🥳🎉🎊🥳🎉🎊🥳🎉🎊🥳🎉🎊🥳🎉🎊🥳';
+                    document.body.appendChild(this.element);
+                },
+                stop() {
+                    if (!this.element) return;
+                    this.element.remove();
+                    this.element = null;
+                }
+            },
+            getRandomColor() {
+                const colors = ['#ff0000', '#ff00ff', '#00ff00', '#0000ff', '#ffff00', '#ff8c00'];
+                return colors[Math.floor(Math.random() * colors.length)];
+            }
+        };
+
+        // Start/Stop game effects
+        function startGameEffects() {
+            gameEffects.confetti.start();
+            gameEffects.train.start();
+        }
+
+        function stopGameEffects() {
+            gameEffects.confetti.stop();
+            gameEffects.train.stop();
+        }
+
+        function showGameInstructions() {
+            // Create and show the instruction overlay
+            const overlay = document.createElement('div');
+            overlay.className = 'instruction-overlay';
+            overlay.innerHTML = `
+<h1>Parewaaaaaaaa attcak who willl save usssss</h1>
+                <p>ELIMATE THE PAREWAAAAAAAAAAAA PAREWAAAAAAA XHI XHI XHI</p>
+                <p>PAREWAA LAI PRESSSSSSS GARE MARXAN HOLAAA</p>
+                <button class="start-game-btn" onclick="startPigeonGame()">START GAME</button>
+            `;
+            document.body.appendChild(overlay);
+        }
+        
+        function startPigeonGame() {
+            // Stop the looping sound if it's playing
+            if (loopSound) {
+                loopSound.pause();
+                loopSound.currentTime = 0;
+            }
+            
+            // Remove the instruction overlay if it exists
+            const overlay = document.querySelector('.instruction-overlay');
+            if (overlay) {
+                overlay.remove();
+            }
+            
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            document.getElementById('sound-prompt').style.display = 'none';
+            preloadSounds();
+            currentLevel = 1;
+            generateTargets('pigeon', 3);
+            
+            // Add celebration sound callback
+            congratulationsSound.addEventListener('ended', () => {
+                if (!congratulationsSound.redirected) {
+                    congratulationsSound.redirected = true;
+                    startSpinachGame();
+                }
+            });
+        }
+
+        function startSpinachGame() {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            document.getElementById('sound-prompt').style.display = 'none';
+            preloadSounds();
+            currentLevel = 2;
+            generateTargets('spinach', 5);
+            
+            // Add celebration sound callback
+            congratulationsSound.addEventListener('ended', () => {
+                if (!congratulationsSound.redirected) {
+                    congratulationsSound.redirected = true;
+                    // Handle final level completion
+                    showFinalLevel();
+                }
+            });
+        }
+
+        function startGame() {
+            generateTargets('pigeon', 5);
+        }
+
+        function generateTargets(type, count) {
+            const level = document.getElementById(`level${currentLevel}`);
+            const targetCount = count * 3; 
+            for (let i = 0; i < targetCount; i++) {
+                const target = document.createElement('img');
+                if (type === 'pigeon') {
+                    target.src = 'pigeon.png'; 
+                } else if (type === 'spinach') {
+                    target.src = 'spinach.png'; 
+                }
+                target.className = 'target';
+                target.style.width = '50px';
+                target.style.height = '50px';
+                
+                let x = Math.random() * 90 + 5; // More spread out
+                let y = Math.random() * 80 + 10;
+                
+                let attempts = 0;
+                while (attempts < 10) {
+                    let valid = true;
+                    const existingTargets = level.getElementsByClassName('target');
+                    for (let j = 0; j < existingTargets.length; j++) {
+                        const rect = existingTargets[j].getBoundingClientRect();
+                        const newX = x * window.innerWidth / 100;
+                        const newY = y * window.innerHeight / 100;
+                        if (Math.abs(newX - rect.left) < 100 && Math.abs(newY - rect.top) < 100) {
+                            valid = false;
+                            break;
+                        }
+                    }
+                    if (valid) break;
+                    x = Math.random() * 80 + 10;
+                    y = Math.random() * 80 + 10;
+                    attempts++;
+                }
+                
+                target.style.left = `${x}%`;
+                target.style.top = `${y}%`;
+                target.onclick = () => {
+                    eliminateTarget(target, type);
+                };
+                level.appendChild(target);
+            }
+        }
+
+        function eliminateTarget(target, type) {
+            // Ensure we have a valid target
+            if (!target) {
+                console.error('Invalid target provided');
+                return;
+            }
+
+            // Create smoke effect
+            const smoke = document.createElement('div');
+            smoke.className = 'smoke';
+            const rect = target.getBoundingClientRect();
+            smoke.style.left = `${rect.left + rect.width / 2}px`;
+            smoke.style.top = `${rect.top + rect.height / 2}px`;
+            document.body.appendChild(smoke);
+
+            // Show elimination message
+            const messages = [
+                "WOWOWOWOWOWOWOW SUCH POWER WOWOWOWOW",
+                "AHOAHOAHAOAHAO DEM DEM DEM YESTO SPIRITUAL POWER TA KATA HOLA",
+                "AHHH PEIGONS TA EUTA JORPATI NIRA KO THAU MA NI HUNXA ",
+                "THULO ROUND YELLOW TOP VHAKO EUTA THAU THIO UMMMMMM K THIYO PAREWA PAREWA VHAKO K PO THIYO"
+            ];
+            const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+            const topMessage = document.getElementById('topMessage');
+            topMessage.textContent = randomMessage;
+            
+            // Make pigeon disappear immediately
+            target.style.opacity = '0';
+            target.style.pointerEvents = 'none';
+            
+            // Remove the target from the DOM after a delay
+            setTimeout(() => {
+                if (target && target.parentNode) {
+                    target.remove();
+                }
+                if (smoke && smoke.parentNode) {
+                    smoke.remove();
+                }
+                // Keep the message visible longer
+                setTimeout(() => {
+                    if (topMessage) {
+                        topMessage.textContent = '';
+                    }
+                }, 1500); // Keep message for 1.5 seconds
+                
+                // Check if level is complete after removal
+                checkLevelComplete();
+            }, 100);
+
+            // Play sound
+            try {
+                playSound(type);
+            } catch (error) {
+                console.error('Error playing sound:', error);
+            }
+        }
+
+        function playSound(type) {
+            // Stop any currently playing sound
+            if (currentSound) {
+                currentSound.pause();
+                currentSound.currentTime = 0;
+            }
+            
+            if (type === 'pigeon' || type === 'spinach') {
+                boomSound.currentTime = 0;
+                boomSound.play();
+                currentSound = boomSound;
+            } else if (type === 'congratulations') {
+                congratulationsSound.currentTime = 0;
+                congratulationsSound.play();
+                currentSound = congratulationsSound;
+            }
+        }
+
+        function showMessage(text) {
+            const message = document.createElement('div');
+            message.className = 'message';
+            message.textContent = text;
+            
+            // Create sparkles
+            const sparkles = document.createElement('div');
+            sparkles.className = 'sparkles';
+            
+            // Add sparkles
+            for (let i = 0; i < 20; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.style.left = `${Math.random() * 100}%`;
+                sparkle.style.animationDelay = `${Math.random() * 2}s`;
+                sparkles.appendChild(sparkle);
+            }
+            
+            document.body.appendChild(message);
+            document.body.appendChild(sparkles);
+            
+            // Animation sequence
+            message.style.opacity = '1';
+            message.style.transform = 'translate(-50%, -50%) translateY(0) scale(1)';
+            
+            // Remove after animation
+            setTimeout(() => {
+                message.style.opacity = '0';
+                message.style.transform = 'translate(-50%, -50%) translateY(20px) scale(0.95)';
+                
+                setTimeout(() => {
+                    message.remove();
+                    sparkles.remove();
+                }, 500);
+            }, 3000);
+        }
+
+        let waitingScreen = null;
+
+        function showWaitingScreen() {
+            if (waitingScreen) return;
+            
+            waitingScreen = document.createElement('div');
+            waitingScreen.className = 'waiting-screen';
+            
+            const text = document.createElement('div');
+            text.innerHTML = 'WAITING...';
+            waitingScreen.appendChild(text);
+            
+            document.body.appendChild(waitingScreen);
+        }
+
+        function hideWaitingScreen() {
+            if (waitingScreen) {
+                waitingScreen.remove();
+                waitingScreen = null;
+            }
+        }
+
+        function createConfetti() {
+            const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
+            const confettiContainer = document.createElement('div');
+            confettiContainer.style.position = 'fixed';
+            confettiContainer.style.top = '0';
+            confettiContainer.style.left = '0';
+            confettiContainer.style.width = '100%';
+            confettiContainer.style.height = '100%';
+            confettiContainer.style.pointerEvents = 'none';
+            confettiContainer.style.zIndex = '9999';
+            document.body.appendChild(confettiContainer);
+
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.style.position = 'absolute';
+                confetti.style.width = Math.random() * 10 + 5 + 'px';
+                confetti.style.height = Math.random() * 10 + 5 + 'px';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.top = '-20px';
+                confetti.style.opacity = Math.random() * 0.5 + 0.5;
+                confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                confetti.style.animation = `fall ${Math.random() * 3 + 2}s linear forwards`;
+                confettiContainer.appendChild(confetti);
+            }
+
+            // Clean up after animation
+            setTimeout(() => {
+                confettiContainer.remove();
+            }, 5000);
+
+            // Add animation
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes fall {
+                    to {
+                        transform: translateY(100vh) rotate(360deg);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        function checkLevelComplete() {
+            const currentLevelElement = document.getElementById(`level${currentLevel}`);
+            if (!currentLevelElement) {
+                console.error('Current level element not found');
+                return;
+            }
+
+            // Use querySelectorAll with a more specific selector to ensure we're only getting the current level's targets
+            const targets = currentLevelElement.querySelectorAll('.target:not(.completed)');
+            console.log('Remaining targets:', targets.length);
+            
+            if (targets.length === 0) {
+                // Prevent multiple celebrations
+                if (currentLevelElement.classList.contains('completed')) {
+                    console.log('Already completed this level');
+                    return;
+                }
+                console.log('Level completed! Starting celebration...');
+                currentLevelElement.classList.add('completed');
+                
+                // Show celebration message
+                const celebration = document.createElement('div');
+                celebration.textContent = 'yeah pigeon goneeeee ooooo wht could be the white thulo place with yellow pinnacle';
+                celebration.style.position = 'fixed';
+                celebration.style.top = '50%';
+                celebration.style.left = '50%';
+                celebration.style.transform = 'translate(-50%, -50%)';
+                celebration.style.fontSize = '3em';
+                celebration.style.color = '#fff';
+                celebration.style.textShadow = '0 0 10px #000';
+                celebration.style.zIndex = '10000';
+                celebration.style.animation = 'pulse 0.5s infinite';
+                document.body.appendChild(celebration);
+                
+                // Show confetti
+                createConfetti();
+                
+                // Play congratulations sound
+                const congratulationsSound = new Audio('congratulations.mp3');
+                congratulationsSound.play().catch(e => console.error('Error playing sound:', e));
+                
+                // Play additional celebration sound
+                const celebrationSound = new Audio('congratulations.mp3');
+                celebrationSound.play().catch(e => console.error('Error playing celebration sound:', e));
+                
+                // Redirect after 4 seconds
+                setTimeout(() => {
+                    window.location.href = 'options.html';
+                }, 4000);
+            }
+        }
+
+        function showFinalLevel() {
+            const typewriter = document.querySelector('.typewriter');
+            const text = [
+                "YES ONE PAREWA GONE MORE TO COMEEEEEE",
+                "DON DON DON GOAT GOAT GOAT DON HO DON",
+                "ABA 2 TA ANI TA SAKYO YO FOUL BIRD HARU SAB MARNU PARXA",
+                "BOUDDHA MA NI PAREWA XA TIYO THAU KO PAREWA KASLE CLEAN UP GARLA HMM........"
+            ].join('\n\n');
+
+            let i = 0;
+            function type() {
+                if (i < text.length) {
+                    typewriter.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(type, 50);
+                }
+            }
+            type();
+        }
+
+        function acceptSummons() {
+            showMessage("Mam's wisdom knows no bounds!");
+        }
+
+        function meditate() {
+            showMessage("Mam contemplates with divine grace.");
+        }
+
+        // Dialogue system
+        const dialogueMessages = [
+            "YO YO YO YO ",
+            "K XAAAAAAA",
+            "YO MANUSYA SANGA EUTA FREIDNLY TOUR MA JANA MIXA HAJUR",
+            "HAJUR DONT WORRY MANUSYA GOT ALL THINGS FIXED NO ROMANTIC NO NO ONLY WORSHIP DEITY TOUR ",
+            "YES I HAVE KATA RA KASARI NO ROMO HAI EKDAM PRAYIN TO GOD THIS NOT DATE,GOD AND HUMAN MEET UP"
+        ];
+
+        // Global variables
+        let currentMessageIndex = 0;
+        let currentSound = null; // To track currently playing sound
+        let skipSound = null; // To track skip sound
+        let isTyping = false;
+        let loopSound = null; // To track the looping sound
+
+        function showTypingIndicator() {
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'typing-indicator';
+            typingDiv.textContent = '...';
+            typingDiv.style.animation = 'typing 1s ease-in-out infinite';
+            document.getElementById('messages-container').appendChild(typingDiv);
+            return typingDiv;
+        }
+
+        function skipDialogue() {
+            // Stop any currently playing sound
+            if (currentSound) {
+                currentSound.pause();
+                currentSound.currentTime = 0;
+            }
+            
+            // Play skip sound
+            skipSound = new Audio('pop.mp3');
+            skipSound.play();
+            
+            // Hide dialogue container
+            document.getElementById('dialogue-container').style.display = 'none';
+            
+            // Show sound-prompt and start looping sound
+            const soundPrompt = document.getElementById('sound-prompt');
+            soundPrompt.style.display = 'flex';
+            
+            // Start playing the looping sound
+            if (loopSound) {
+                loopSound.pause();
+            }
+            loopSound = new Audio('ahh.m4a');
+            loopSound.loop = true;
+            loopSound.play().catch(e => console.error('Error playing loop sound:', e));
+        }
+
+        function showNextMessage() {
+            if (currentMessageIndex < dialogueMessages.length) {
+                const typingDiv = showTypingIndicator();
+                
+                // Play notification sound immediately
+                const notificationSound = new Audio('pop.mp3');
+                notificationSound.play();
+                
+                // Remove typing indicator after delay
+                setTimeout(() => {
+                    typingDiv.remove();
+                    
+                    // Create and show the message
+                    const messageDiv = document.createElement('div');
+                    messageDiv.className = 'message-bubble';
+                    messageDiv.textContent = dialogueMessages[currentMessageIndex];
+                    document.getElementById('messages-container').appendChild(messageDiv);
+                    
+                    // Scroll to bottom
+                    const container = document.getElementById('messages-container');
+                    container.scrollTop = container.scrollHeight;
+                    
+                    // Show next message after delay
+                    currentMessageIndex++;
+                    setTimeout(showNextMessage, 1000);
+                }, 1000);
+            }
+        }
+
+        // Start the dialogue when page loads
+        window.onload = function() {
+            showNextMessage();
+        }
+    </script>
